@@ -37,20 +37,11 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
-        const lordOfTheRingsMovies = movies.filter(movie => movie.startsWith("The Lord of the Rings"));
-
-        if (lordOfTheRingsMovies.length > 0) {
-            const selectedMovie = lordOfTheRingsMovies[0];
-            result.textContent = `The chosen movie is: ${selectedMovie}`;
-            movies = movies.filter(movie => movie !== selectedMovie);
-            await updateMovieFile();
-        } else {
-            const randomIndex = Math.floor(Math.random() * movies.length);
-            const selectedMovie = movies[randomIndex];
-            result.textContent = `The chosen movie is: ${selectedMovie}`;
-            movies.splice(randomIndex, 1);
-            await updateMovieFile();
-        }
+        const randomIndex = Math.floor(Math.random() * movies.length);
+        const selectedMovie = movies[randomIndex];
+        result.textContent = `The chosen movie is: ${selectedMovie}`;
+        movies.splice(randomIndex, 1);
+        await updateMovieFile();
     };
 
     const updateMovieFile = async () => {
