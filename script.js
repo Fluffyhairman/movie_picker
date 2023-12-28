@@ -1,90 +1,31 @@
 document.addEventListener("DOMContentLoaded", function() {
-    let movies = [];
-
-    const selectButton = document.getElementById("selectButton");
-    const addButton = document.getElementById("addButton");
-    const overwriteButton = document.getElementById("overwriteButton");
-    const viewAllButton = document.getElementById("viewAllButton");
+    const wheel = document.getElementById("wheel");
+    const wheelInner = document.getElementById("wheel-inner");
+    const movieListInput = document.getElementById("movieListInput");
     const result = document.getElementById("result");
-    const movieList = document.getElementById("movieList");
 
-    const loadMovies = async () => {
-        try {
-            const response = await fetch("movie.txt");
-            
-            if (!response.ok) {
-                throw new Error("Failed to load movie data.");
-            }
-
-            const data = await response.text();
-            movies = data.split("\n").filter(movie => movie.trim() !== "");
-            enableButtons();
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const enableButtons = () => {
-        selectButton.disabled = false;
-        addButton.disabled = false;
-        overwriteButton.disabled = false;
-        viewAllButton.disabled = false;
-    };
-
-    const selectRandomMovie = async () => {
-        if (movies.length === 0) {
-            result.textContent = "Movie data not loaded. Please refresh the page.";
+    wheel.addEventListener("click", function() {
+        const movieListText = movieListInput.value.trim();
+        if (!movieListText) {
+            result.textContent = "Please paste a list of movie titles.";
             return;
         }
 
-        const randomIndex = Math.floor(Math.random() * movies.length);
-        const selectedMovie = movies[randomIndex];
-        result.textContent = `The chosen movie is: ${selectedMovie}`;
-        movies.splice(randomIndex, 1);
-        await updateMovieFile();
-    };
+        const movieTitles = movieListText.split('\n').filter(title => title.trim() !== '');
 
-    const updateMovieFile = async () => {
-        try {
-            const updatedData = movies.join("\n");
-            await fetch("movie.txt", {
-                method: "PUT",
-                body: updatedData
-            });
-        } catch (error) {
-            console.error("Failed to update movie data in the file.", error);
+        if (movieTitles.length === 0) {
+            result.textContent = "No valid movie titles found.";
+            return;
         }
-    };
 
-    const addMovie = () => {
-        const newMovie = prompt("Enter the name of the movie:");
-        if (newMovie) {
-            movies.push(newMovie);
-            updateMovieFile();
-        }
-    };
+        const randomIndex = Math.floor(Math.random() * movieTitles.length);
+        const selectedMovie = movieTitles[randomIndex];
 
-    const overwriteMovies = () => {
-        const newMovieData = prompt("Enter the new batch of movies (separated by line breaks):");
-        if (newMovieData) {
-            movies = newMovieData.split("\n").filter(movie => movie.trim() !== "");
-            updateMovieFile();
-        }
-    };
-
-    const viewAllMovies = () => {
-        movieList.innerHTML = "";
-        movies.forEach(movie => {
-            const listItem = document.createElement("li");
-            listItem.textContent = movie;
-            movieList.appendChild(listItem);
-        });
-    };
-
-    loadMovies();
-
-    selectButton.addEventListener("click", selectRandomMovie);
-    addButton.addEventListener("click", addMovie);
-    overwriteButton.addEventListener("click", overwriteMovies);
-    viewAllButton.addEventListener("click", viewAllMovies);
+        // Stop the wheel animation and display the chosen movie
+        wheel.style.animation = "none";
+        wheelInner.style.transform = `rotate(${randomIndex * (360 / movieTitles.length)}deg)`;
+        setTimeout(() => {
+            result.textContent = `The chosen movie is: ${selectedMovie}`;
+        }, 1000); // Adjust the duration as needed
+    });
 });

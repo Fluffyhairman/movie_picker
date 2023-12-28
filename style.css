@@ -1,17 +1,31 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 20px;
+/* Add these styles for the spinning wheel */
+.wheel {
+    width: 200px;
+    height: 200px;
+    background-color: #f2f2f2;
+    border-radius: 50%;
+    position: relative;
+    margin: 20px auto;
+    overflow: hidden;
+    animation: spin 3s cubic-bezier(0.4, 2.2, 0.2, 1.3) infinite;
 }
 
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
+.wheel-inner {
+    width: 0;
+    height: 0;
+    border: 100px solid transparent;
+    border-bottom: 100px solid #3498db;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-#result {
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 20px;
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

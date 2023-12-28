@@ -8,12 +8,14 @@
 </head>
 <body>
     <h1>Movie Selector</h1>
-    <button id="selectButton">Select a Movie</button>
-    <button id="addButton">Add a Movie</button>
-    <button id="overwriteButton">Overwrite Movies</button>
-    <button id="viewAllButton">View All Movies</button>
+    <div id="wheel" class="wheel">
+        <div id="wheel-inner" class="wheel-inner"></div>
+    </div>
+    <div>
+        <label for="movieListInput">Paste your list of movie titles:</label>
+        <textarea id="movieListInput" rows="5" cols="50"></textarea>
+    </div>
     <p id="result"></p>
-    <ul id="movieList"></ul>
     <script src="script.js"></script>
 </body>
 </html>
